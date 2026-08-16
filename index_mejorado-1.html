@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Observatorio Cívico Regional de La Libertad, Perú: datos, análisis y herramientas educativas sobre seguridad ciudadana, salud, educación y brechas territoriales.">
+  <meta name="author" content="W. Rodríguez Sarmiento">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#312e81">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Observatorio Cívico Regional — La Libertad">
+  <meta property="og:description" content="Explora indicadores y asuntos públicos de La Libertad: seguridad, salud y educación.">
+  <meta property="og:locale" content="es_PE">
+  <link rel="canonical" href="https://wrodriguezsarmiento7-boop.github.io/Trujillo--mantiene-/">
+  <title>Observatorio Cívico Regional — La Libertad</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  
+<!--
+  GOOGLE ANALYTICS (opcional)
+  Para medir visitas reales, crea una propiedad en Google Analytics y coloca
+  aquí el ID que te entregue Google (formato G-XXXXXXXXXX).
+  No uses un ID inventado: el contador solo funcionará con tu ID real.
+-->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff', 100: '#e0e7ff', 600: '#4f46e5',
+              700: '#4338ca', 800: '#3730a3', 900: '#312e81'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .active-tab { border-bottom: 3px solid #4f46e5; color: #4f46e5 !important; font-weight: 700; background: #eef2ff; }
+    .card-transition { transition: all .25s ease; }
+    .card-transition:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(15,23,42,.08); }
+    .tab-content { animation: fade .22s ease; }
+    @keyframes fade { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .glass { background: rgba(255,255,255,.10); backdrop-filter: blur(10px); }
+    .progress-bar { transition: width .5s ease; }
+    .toast { animation: toastIn .25s ease; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    canvas { max-height: 290px; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+<!-- HEADER -->
+<!-- DATOS ESTRUCTURADOS: ayuda a los buscadores a entender el proyecto -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"Observatorio Cívico Regional — La Libertad",
+  "description":"Observatorio educativo sobre asuntos públicos y estadísticas de La Libertad, Perú.",
+  "url":"https://wrodriguezsarmiento7-boop.github.io/Trujillo--mantiene-/",
+  "inLanguage":"es-PE",
+  "author":{"@type":"Person","name":"W. Rodríguez Sarmiento"}
+}
+</script>
+
+<header class="bg-brand-900 text-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 bg-brand-600 rounded-lg shadow-md">
+        <i class="fa-solid fa-chart-line text-2xl"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold leading-tight">Observatorio Cívico Regional</h1>
+        <p class="text-xs text-brand-100">Asuntos Públicos y Estadísticas · La Libertad, Perú</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 bg-brand-800 px-3 py-1.5 rounded-full text-xs text-brand-100">
+      <i class="fa-solid fa-location-dot text-red-400"></i>
+      <span>La Libertad · Costa y Sierra</span>
+    </div>
+  </div>
+</header>
+
+<!-- AUTOR / IDENTIDAD DEL PROYECTO -->
+<section class="bg-white border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <p class="text-xs text-slate-600">
+      <i class="fa-solid fa-user-pen text-brand-600 mr-1"></i>
+      Proyecto desarrollado por <strong class="text-slate-800">W. Rodríguez Sarmiento</strong>
+    </p>
+    <p class="text-xs text-slate-500">Observatorio ciudadano independiente · La Libertad, Perú</p>
+  </div>
+</section>
+
+<!-- HERO -->
+<section class="bg-gradient-to-r from-brand-800 via-brand-700 to-indigo-900 text-white py-8 px-4 shadow-inner">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col lg:flex-row justify-between gap-6 items-start">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+          <i class="fa-solid fa-signal"></i> Panel ciudadano
+        </span>
+        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Entender los problemas públicos para decidir mejor.</h2>
+        <p class="mt-3 text-indigo-100 text-sm md:text-base">
+          Explora seguridad, salud y educación. Luego prueba cómo distintas prioridades de política pública pueden modificar un escenario regional simulado.
+        </p>
+      </div>
+      <div class="glass rounded-2xl border border-white/10 p-4 min-w-[250px]">
+        <div class="text-xs text-indigo-200">Actualización del tablero</div>
+        <div class="text-lg font-bold mt-1" id="lastUpdated">15 de agosto de 2026</div>
+        <div class="text-xs text-indigo-200 mt-1">Datos demostrativos para fines educativos.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
+      <div class="glass p-4 rounded-xl border border-white/10">
+        <div class="text-xs font-semibold text-amber-300 uppercase">Prioridad 1</div>
+        <div class="text-xl font-bold mt-1">Seguridad</div>
+        <div class="text-xs text-indigo-100 mt-2">Percepción de inseguridad, extorsión y prevención comunitaria.</div>
+      </div>
+      <div class="glass p-4 rounded-xl border border-white/10">
+        <div class="text-xs font-semibold text-emerald-300 uppercase">Prioridad 2</div>
+        <div class="text-xl font-bold mt-1">Salud</div>
+        <div class="text-xs text-indigo-100 mt-2">Anemia infantil, dengue, prevención y primer nivel de atención.</div>
+      </div>
+      <div class="glass p-4 rounded-xl border border-white/10">
+        <div class="text-xs font-semibold text-sky-300 uppercase">Prioridad 3</div>
+        <div class="text-xl font-bold mt-1">Educación</div>
+        <div class="text-xs text-indigo-100 mt-2">Conectividad, servicios básicos y brechas territoriales.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+  <!-- FILTER BAR -->
+  <section class="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <h2 class="font-bold text-slate-900"><i class="fa-solid fa-filter text-brand-600 mr-2"></i>Explorador territorial</h2>
+        <p class="text-xs text-slate-500">Filtra la información por provincia para comparar escenarios.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <select id="provinceFilter" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 outline-none">
+          <option value="regional">Toda La Libertad</option>
+          <option value="trujillo">Trujillo</option>
+          <option value="pataz">Pataz</option>
+          <option value="viru">Virú</option>
+          <option value="chepen">Chepén</option>
+          <option value="pacasmayo">Pacasmayo</option>
+          <option value="sanchez">Sánchez Carrión</option>
+        </select>
+        <button id="resetFilters" class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm font-semibold">
+          Restablecer
+        </button>
+      </div>
+    </div>
+    <div id="filterMessage" class="mt-3 text-xs text-brand-700 bg-brand-50 rounded-lg px-3 py-2">
+      Vista regional seleccionada.
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <div class="flex flex-wrap justify-center border-b border-slate-200 mb-8 bg-white rounded-xl shadow-sm p-2 gap-2">
+    <button onclick="switchTab('tab-inicio')" id="btn-inicio" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-600 transition flex items-center gap-2">
+      <i class="fa-solid fa-house"></i><span>Resumen</span>
+    </button>
+    <button onclick="switchTab('tab-seguridad')" id="btn-seguridad" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-600 transition flex items-center gap-2">
+      <i class="fa-solid fa-shield-halved"></i><span>Seguridad</span>
+    </button>
+    <button onclick="switchTab('tab-salud')" id="btn-salud" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-600 transition flex items-center gap-2">
+      <i class="fa-solid fa-heart-pulse"></i><span>Salud</span>
+    </button>
+    <button onclick="switchTab('tab-educacion')" id="btn-educacion" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-600 transition flex items-center gap-2">
+      <i class="fa-solid fa-laptop-code"></i><span>Educación</span>
+    </button>
+    <button onclick="switchTab('tab-simulador')" id="btn-simulador" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 transition flex items-center gap-2 border border-amber-200">
+      <i class="fa-solid fa-sliders"></i><span>Simulador</span>
+    </button>
+    <button onclick="switchTab('tab-trivia')" id="btn-trivia" class="nav-btn px-4 py-3 rounded-lg text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-2 border border-indigo-200">
+      <i class="fa-solid fa-graduation-cap"></i><span>Autoevaluación</span>
+    </button>
+  </div>
+
+  <!-- INICIO -->
+  <section id="tab-inicio" class="tab-content space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-transition">
+        <div class="w-11 h-11 rounded-xl bg-red-100 text-red-700 flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="font-bold text-lg">Seguridad ciudadana</h3>
+        <p class="text-sm text-slate-500 mt-2">Extorsión, crimen organizado, victimización y prevención comunitaria.</p>
+        <button onclick="switchTab('tab-seguridad')" class="mt-4 text-sm font-bold text-brand-600">Explorar →</button>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-transition">
+        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h3 class="font-bold text-lg">Salud pública</h3>
+        <p class="text-sm text-slate-500 mt-2">Anemia infantil, dengue, nutrición y capacidad del primer nivel.</p>
+        <button onclick="switchTab('tab-salud')" class="mt-4 text-sm font-bold text-brand-600">Explorar →</button>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-transition">
+        <div class="w-11 h-11 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4"><i class="fa-solid fa-laptop-code"></i></div>
+        <h3 class="font-bold text-lg">Educación digital</h3>
+        <p class="text-sm text-slate-500 mt-2">Internet, servicios básicos y desigualdad entre costa y sierra.</p>
+        <button onclick="switchTab('tab-educacion')" class="mt-4 text-sm font-bold text-brand-600">Explorar →</button>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="flex flex-col md:flex-row justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase text-brand-600">Lectura rápida</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-1">Tres brechas que requieren coordinación</h2>
+          <p class="text-sm text-slate-500 mt-2 max-w-3xl">El tablero no pretende reemplazar las estadísticas oficiales: sirve para visualizar relaciones, practicar análisis y discutir prioridades de política pública.</p>
+        </div>
+        <div class="text-sm bg-amber-50 text-amber-800 border border-amber-200 rounded-xl p-4 max-w-sm">
+          <i class="fa-solid fa-circle-info mr-1"></i>
+          <strong>Importante:</strong> las cifras de ejemplo deben reemplazarse por series oficiales antes de usarlas en un informe académico o institucional.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGURIDAD -->
+  <section id="tab-seguridad" class="tab-content hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Prioridad 1</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-2">Seguridad Ciudadana y Extorsión</h2>
+          <p class="text-sm text-slate-600">Indicadores ilustrativos para analizar percepción, victimización y riesgo.</p>
+        </div>
+        <div class="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-200">
+          <i class="fa-solid fa-database mr-1 text-brand-600"></i> Referencias sugeridas: INEI · MININTER · PNP.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div class="p-4 rounded-xl bg-red-50 border border-red-100 card-transition"><div class="text-xs text-red-600">Percepción de inseguridad</div><div id="kpiSecurityPerception" class="text-3xl font-extrabold text-red-700 mt-1">87.3%</div><div class="text-xs text-red-600 mt-1">Escenario demostrativo.</div></div>
+        <div class="p-4 rounded-xl bg-amber-50 border border-amber-100 card-transition"><div class="text-xs text-amber-700">Extorsión — índice</div><div id="kpiExtortion" class="text-3xl font-extrabold text-amber-800 mt-1">350</div><div class="text-xs text-amber-700 mt-1">Base 2019 = 100.</div></div>
+        <div class="p-4 rounded-xl bg-orange-50 border border-orange-100 card-transition"><div class="text-xs text-orange-700">Prioridad relativa</div><div id="kpiRisk" class="text-3xl font-extrabold text-orange-800 mt-1">Alta</div><div class="text-xs text-orange-700 mt-1">Índice compuesto simulado.</div></div>
+        <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 card-transition"><div class="text-xs text-slate-700">Victimización</div><div id="kpiVictimization" class="text-3xl font-extrabold text-slate-800 mt-1">26.8%</div><div class="text-xs text-slate-600 mt-1">Escenario demostrativo.</div></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold text-slate-800">Percepción de inseguridad</h3>
+          <p class="text-xs text-slate-500 mb-4">Comparación ilustrativa.</p>
+          <canvas id="chartSeguridad"></canvas>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold text-slate-800">Evolución del índice de extorsión</h3>
+          <p class="text-xs text-slate-500 mb-4">Serie indexada: 2019 = 100.</p>
+          <canvas id="chartExtorsion"></canvas>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+          <h4 class="font-bold mb-3"><i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i>Factores a observar</h4>
+          <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside">
+            <li>Crimen organizado y cobro de cupos a actividades económicas.</li>
+            <li>Control territorial y economías ilegales en zonas críticas.</li>
+            <li>Subregistro de delitos y barreras para denunciar.</li>
+            <li>Capacidad de prevención y respuesta policial/municipal.</li>
+          </ul>
+        </div>
+        <div class="p-5 bg-indigo-50 rounded-xl border border-indigo-100">
+          <h4 class="font-bold text-indigo-900 mb-3"><i class="fa-solid fa-people-group text-indigo-600 mr-2"></i>Acción ciudadana</h4>
+          <p class="text-sm text-indigo-800">Fortalecer juntas vecinales, coordinación con autoridades, prevención situacional y canales oficiales de denuncia. Evita exponer públicamente datos personales de víctimas o denunciantes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SALUD -->
+  <section id="tab-salud" class="tab-content hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="border-b border-slate-100 pb-4">
+        <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Prioridad 2</span>
+        <h2 class="text-2xl font-bold text-slate-900 mt-2">Salud Pública: Anemia y Dengue</h2>
+        <p class="text-sm text-slate-600">Indicadores demostrativos para comprender prevención y desigualdad territorial.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100 card-transition"><div class="text-xs text-emerald-700">Anemia infantil</div><div id="kpiAnemia" class="text-3xl font-extrabold text-emerald-800 mt-1">34.2%</div><div class="text-xs text-emerald-700 mt-1">6–35 meses · escenario demo.</div></div>
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-100 card-transition"><div class="text-xs text-rose-700">Riesgo IRAs</div><div class="text-3xl font-extrabold text-rose-800 mt-1">17.4%</div><div class="text-xs text-rose-700 mt-1">Indicador ilustrativo.</div></div>
+        <div class="p-4 rounded-xl bg-teal-50 border border-teal-100 card-transition"><div class="text-xs text-teal-700">Riesgo dengue</div><div id="kpiDengue" class="text-3xl font-extrabold text-teal-800 mt-1">Alto</div><div class="text-xs text-teal-700 mt-1">Escala cualitativa simulada.</div></div>
+        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100 card-transition"><div class="text-xs text-blue-700">Desnutrición crónica</div><div class="text-3xl font-extrabold text-blue-800 mt-1">11.5%</div><div class="text-xs text-blue-700 mt-1">Indicador ilustrativo.</div></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold">Anemia infantil por ámbito</h3>
+          <p class="text-xs text-slate-500 mb-4">Ejemplo de comparación territorial.</p>
+          <canvas id="chartSalud"></canvas>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold">Componentes de prevención</h3>
+          <p class="text-xs text-slate-500 mb-4">Prioridades relativas simuladas.</p>
+          <canvas id="chartSaludRadar"></canvas>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+          <h4 class="font-bold mb-3"><i class="fa-solid fa-notes-medical text-emerald-600 mr-2"></i>Ejes de intervención</h4>
+          <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside">
+            <li>Prevención y vigilancia de dengue.</li>
+            <li>Suplementación y seguimiento de anemia según indicación sanitaria.</li>
+            <li>Agua segura, saneamiento e higiene.</li>
+            <li>Fortalecimiento del primer nivel de atención.</li>
+          </ul>
+        </div>
+        <div class="p-5 bg-emerald-50 rounded-xl border border-emerald-100">
+          <h4 class="font-bold text-emerald-900 mb-3"><i class="fa-solid fa-hand-holding-medical text-emerald-600 mr-2"></i>Prevención</h4>
+          <p class="text-sm text-emerald-800">Eliminar criaderos de mosquitos, mantener recipientes de agua tapados y acudir a controles de salud. Las recomendaciones clínicas deben seguir las indicaciones del MINSA y del personal sanitario.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCACION -->
+  <section id="tab-educacion" class="tab-content hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="border-b border-slate-100 pb-4">
+        <span class="bg-sky-100 text-sky-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Prioridad 3</span>
+        <h2 class="text-2xl font-bold text-slate-900 mt-2">Educación, Conectividad y Brecha Territorial</h2>
+        <p class="text-sm text-slate-600">Costa urbana y sierra pueden enfrentar restricciones muy distintas.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div class="p-4 rounded-xl bg-sky-50 border border-sky-100 card-transition"><div class="text-xs text-sky-700">Hogares con internet</div><div id="kpiInternet" class="text-3xl font-extrabold text-sky-800 mt-1">55.3%</div><div class="text-xs text-sky-700 mt-1">Escenario demostrativo.</div></div>
+        <div class="p-4 rounded-xl bg-indigo-50 border border-indigo-100 card-transition"><div class="text-xs text-indigo-700">Colegios con internet</div><div id="kpiSchools" class="text-3xl font-extrabold text-indigo-800 mt-1">62.4%</div><div class="text-xs text-indigo-700 mt-1">Escenario demostrativo.</div></div>
+        <div class="p-4 rounded-xl bg-amber-50 border border-amber-100 card-transition"><div class="text-xs text-amber-700">3 servicios básicos</div><div class="text-3xl font-extrabold text-amber-800 mt-1">58.2%</div><div class="text-xs text-amber-700 mt-1">Agua, saneamiento y electricidad.</div></div>
+        <div class="p-4 rounded-xl bg-purple-50 border border-purple-100 card-transition"><div class="text-xs text-purple-700">Brecha digital</div><div id="kpiGap" class="text-3xl font-extrabold text-purple-800 mt-1">44.7 pp</div><div class="text-xs text-purple-700 mt-1">Escenario ilustrativo.</div></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold">Conectividad por territorio</h3>
+          <p class="text-xs text-slate-500 mb-4">Ejemplo para explorar la desigualdad.</p>
+          <canvas id="chartEducacion"></canvas>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h3 class="font-bold">Servicios escolares</h3>
+          <p class="text-xs text-slate-500 mb-4">Porcentaje simulado de instituciones que cuentan con cada servicio.</p>
+          <canvas id="chartServicios"></canvas>
+        </div>
+      </div>
+
+      <div class="mt-6 p-5 bg-sky-50 rounded-xl border border-sky-100">
+        <h4 class="font-bold text-sky-900 mb-2"><i class="fa-solid fa-route text-sky-600 mr-2"></i>Enfoque territorial</h4>
+        <p class="text-sm text-sky-800">No basta con medir si existe internet: también importa su estabilidad, velocidad, disponibilidad de dispositivos, alfabetización digital, energía eléctrica y distancia a los servicios.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULADOR -->
+  <section id="tab-simulador" class="tab-content hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex flex-col md:flex-row justify-between gap-4 border-b border-slate-100 pb-5">
+        <div>
+          <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Laboratorio</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-2">Simulador de decisiones públicas</h2>
+          <p class="text-sm text-slate-600">Asigna un presupuesto hipotético de 100 puntos y observa un resultado estimado.</p>
+        </div>
+        <div class="bg-slate-900 text-white rounded-xl p-4 text-center min-w-[160px]">
+          <div class="text-xs text-slate-300">Presupuesto usado</div>
+          <div id="budgetUsed" class="text-3xl font-black mt-1">0 / 100</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="space-y-5">
+          <label class="block">
+            <div class="flex justify-between text-sm font-bold"><span>Seguridad</span><span id="securityValue">34</span></div>
+            <input id="securityRange" type="range" min="0" max="100" value="34" class="w-full mt-2 accent-indigo-600">
+          </label>
+          <label class="block">
+            <div class="flex justify-between text-sm font-bold"><span>Salud</span><span id="healthValue">33</span></div>
+            <input id="healthRange" type="range" min="0" max="100" value="33" class="w-full mt-2 accent-emerald-600">
+          </label>
+          <label class="block">
+            <div class="flex justify-between text-sm font-bold"><span>Educación</span><span id="educationValue">33</span></div>
+            <input id="educationRange" type="range" min="0" max="100" value="33" class="w-full mt-2 accent-sky-600">
+          </label>
+          <div id="budgetWarning" class="hidden p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+          <div class="flex gap-2">
+            <button onclick="balanceBudget()" class="px-4 py-2 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700">Distribuir ⅓</button>
+            <button onclick="resetSimulator()" class="px-4 py-2 rounded-lg bg-slate-100 font-semibold hover:bg-slate-200">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 rounded-xl border border-slate-200 p-5">
+          <h3 class="font-bold">Resultado del escenario</h3>
+          <div class="mt-5 space-y-4">
+            <div><div class="flex justify-between text-xs mb-1"><span>Seguridad</span><strong id="scoreSecurity">0</strong></div><div class="h-3 bg-slate-200 rounded-full overflow-hidden"><div id="barSecurity" class="h-full bg-red-500 progress-bar" style="width:0%"></div></div></div>
+            <div><div class="flex justify-between text-xs mb-1"><span>Salud</span><strong id="scoreHealth">0</strong></div><div class="h-3 bg-slate-200 rounded-full overflow-hidden"><div id="barHealth" class="h-full bg-emerald-500 progress-bar" style="width:0%"></div></div></div>
+            <div><div class="flex justify-between text-xs mb-1"><span>Educación</span><strong id="scoreEducation">0</strong></div><div class="h-3 bg-slate-200 rounded-full overflow-hidden"><div id="barEducation" class="h-full bg-sky-500 progress-bar" style="width:0%"></div></div></div>
+          </div>
+          <div class="mt-6 p-4 bg-white rounded-xl border border-slate-200">
+            <div class="text-xs text-slate-500">Lectura del escenario</div>
+            <div id="simulatorMessage" class="font-bold text-slate-900 mt-1">Distribuye el presupuesto para comenzar.</div>
+            <p class="text-xs text-slate-500 mt-2">Modelo educativo simplificado: no representa una proyección fiscal ni económica real.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIVIA -->
+  <section id="tab-trivia" class="tab-content hidden space-y-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="border-b border-slate-100 pb-5">
+        <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Aprendizaje</span>
+        <h2 class="text-2xl font-bold text-slate-900 mt-2">Autoevaluación cívica</h2>
+        <p class="text-sm text-slate-600">Cinco preguntas para comprobar si distingues datos, interpretaciones y decisiones públicas.</p>
+      </div>
+
+      <div id="quizContainer" class="mt-6"></div>
+      <div class="flex flex-wrap gap-3 mt-6">
+        <button onclick="submitQuiz()" class="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-700">Calificar</button>
+        <button onclick="resetQuiz()" class="px-5 py-2.5 rounded-lg bg-slate-100 font-semibold hover:bg-slate-200">Reintentar</button>
+      </div>
+      <div id="quizResult" class="hidden mt-5 p-4 rounded-xl"></div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="mt-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+    <div class="flex items-center gap-2">
+      <i class="fa-solid fa-book-open text-brand-600"></i>
+      <h2 class="font-bold text-lg">Fuentes y metodología</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mt-4 text-sm text-slate-600">
+      <div class="p-4 bg-slate-50 rounded-xl">
+        <strong class="text-slate-800">Fuentes oficiales recomendadas</strong>
+        <ul class="list-disc list-inside mt-2 space-y-1">
+          <li>INEI: ENAPRES, ENDES, ENAHO y estadísticas territoriales.</li>
+          <li>MINSA / CDC Perú: vigilancia epidemiológica.</li>
+          <li>MINEDU / ESCALE: estadísticas educativas.</li>
+          <li>MININTER / PNP: seguridad y denuncias.</li>
+        </ul>
+      </div>
+      <div class="p-4 bg-amber-50 rounded-xl border border-amber-100">
+        <strong class="text-amber-900">Advertencia de uso</strong>
+        <p class="mt-2">Las cifras integradas en esta versión son <strong>demostrativas</strong>. Antes de publicar el tablero, deben validarse año, población, definición del indicador, unidad geográfica y fuente exacta.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- SOBRE EL PROYECTO -->
+<section id="sobre-proyecto" class="mt-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+    <div class="lg:col-span-2">
+      <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase">
+        <i class="fa-solid fa-circle-info"></i> Sobre este observatorio
+      </span>
+      <h2 class="text-2xl font-bold text-slate-900 mt-3">Información pública para entender mejor La Libertad</h2>
+      <p class="text-sm text-slate-600 mt-3 leading-6">
+        Este proyecto organiza indicadores y herramientas educativas para facilitar la comprensión de
+        problemas públicos regionales. Su objetivo es promover ciudadanía informada y análisis responsable.
+      </p>
+      <p class="text-xs text-slate-500 mt-3">
+        <strong>Importante:</strong> algunos valores del tablero son demostrativos. Antes de utilizarlos en
+        una investigación, decisión institucional o publicación periodística, verifica el año, definición,
+        metodología y fuente oficial del indicador.
+      </p>
+    </div>
+    <div class="bg-slate-50 rounded-xl border border-slate-200 p-4">
+      <h3 class="font-bold text-slate-800 text-sm">Autor del proyecto</h3>
+      <p class="text-lg font-extrabold text-brand-700 mt-1">W. Rodríguez Sarmiento</p>
+      <p class="text-xs text-slate-500 mt-2">Observatorio Cívico Regional — La Libertad</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-300 mt-10">
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between gap-5">
+      <div>
+        <div class="font-bold text-white">Observatorio Cívico Regional</div>
+        <p class="text-xs mt-1">Proyecto educativo de visualización de asuntos públicos.</p>
+      </div>
+      <div class="text-xs text-slate-400">
+        La Libertad · Perú · <span id="footerYear">2026</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="fixed bottom-5 right-5 hidden z-[100] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm"></div>
+
+<script>
+const charts = {};
+let currentProvince = 'regional';
+
+const provinceData = {
+  regional: { security:87.3, extortion:350, victimization:26.8, anemia:34.2, dengue:'Alto', internet:55.3, schools:62.4 },
+  trujillo:  { security:89.1, extortion:390, victimization:28.4, anemia:32.8, dengue:'Alto', internet:68.2, schools:76.5 },
+  pataz:     { security:82.4, extortion:430, victimization:24.9, anemia:39.8, dengue:'Medio', internet:31.5, schools:42.8 },
+  viru:      { security:85.7, extortion:330, victimization:25.7, anemia:36.1, dengue:'Alto', internet:49.8, schools:58.7 },
+  chepen:    { security:86.5, extortion:310, victimization:26.1, anemia:35.6, dengue:'Alto', internet:52.4, schools:61.3 },
+  pacasmayo: { security:84.6, extortion:270, victimization:23.8, anemia:33.9, dengue:'Alto', internet:57.1, schools:64.2 },
+  sanchez:   { security:79.8, extortion:190, victimization:21.7, anemia:41.2, dengue:'Bajo', internet:35.7, schools:47.9 }
+};
+
+function cssVars() {
+  return {
+    grid: 'rgba(100,116,139,.15)',
+    text: '#475569'
+  };
+}
+
+function chartDefaults() {
+  const v = cssVars();
+  Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, sans-serif';
+  Chart.defaults.color = v.text;
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+}
+
+function makeChart(id, config) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, config);
+}
+
+function buildCharts() {
+  chartDefaults();
+
+  makeChart('chartSeguridad', {
+    type:'bar',
+    data:{ labels:['La Libertad','Costa','Perú'], datasets:[{label:'Percepción (%)', data:[87.3,84.7,82.1], borderRadius:8}]},
+    options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,max:100,grid:{color:cssVars().grid}}}}
+  });
+
+  makeChart('chartExtorsion', {
+    type:'line',
+    data:{labels:['2019','2020','2021','2022','2023','2024'],datasets:[{label:'Índice',data:[100,112,145,188,267,350],tension:.35,fill:false}]},
+    options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,grid:{color:cssVars().grid}}}}
+  });
+
+  makeChart('chartSalud', {
+    type:'bar',
+    data:{labels:['Costa','Sierra','Región'],datasets:[{label:'Anemia (%)',data:[31.5,39.7,34.2],borderRadius:8}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:60,grid:{color:cssVars().grid}}}}
+  });
+
+  makeChart('chartSaludRadar', {
+    type:'radar',
+    data:{labels:['Prevención dengue','Nutrición','CRED','Agua segura','Primer nivel'],datasets:[{label:'Prioridad relativa',data:[86,78,72,81,88],fill:true}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,max:100}}}
+  });
+
+  makeChart('chartEducacion', {
+    type:'bar',
+    data:{labels:['Trujillo','Costa rural','Sierra'],datasets:[{label:'Hogares con internet (%)',data:[68.2,52.4,35.7],borderRadius:8}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:cssVars().grid}}}}
+  });
+
+  makeChart('chartServicios', {
+    type:'doughnut',
+    data:{labels:['Internet','Electricidad','Agua','Saneamiento'],datasets:[{data:[62.4,94,76,68]}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+  });
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-tab'));
+  const target = document.getElementById(tabId);
+  const btn = document.getElementById('btn-' + tabId.replace('tab-',''));
+  if (target) target.classList.remove('hidden');
+  if (btn) btn.classList.add('active-tab');
+  window.scrollTo({top: document.querySelector('main').offsetTop - 80, behavior:'smooth'});
+}
+
+function updateDashboard() {
+  const d = provinceData[currentProvince];
+  const label = document.querySelector('#provinceFilter option:checked').textContent;
+  document.getElementById('filterMessage').textContent = `Vista seleccionada: ${label}. Los valores son escenarios demostrativos.`;
+
+  setText('kpiSecurityPerception', d.security.toFixed(1) + '%');
+  setText('kpiExtortion', Math.round(d.extortion));
+  setText('kpiVictimization', d.victimization.toFixed(1) + '%');
+  setText('kpiRisk', d.security >= 87 ? 'Muy alta' : d.security >= 83 ? 'Alta' : 'Media');
+  setText('kpiAnemia', d.anemia.toFixed(1) + '%');
+  setText('kpiDengue', d.dengue);
+  setText('kpiInternet', d.internet.toFixed(1) + '%');
+  setText('kpiSchools', d.schools.toFixed(1) + '%');
+  setText('kpiGap', Math.max(0, 100-d.internet).toFixed(1) + ' pp');
+
+  if (charts.chartSeguridad) {
+    charts.chartSeguridad.data.datasets[0].data[0] = d.security;
+    charts.chartSeguridad.update();
+  }
+  if (charts.chartSalud) {
+    charts.chartSalud.data.datasets[0].data[2] = d.anemia;
+    charts.chartSalud.update();
+  }
+  if (charts.chartEducacion) {
+    charts.chartEducacion.data.datasets[0].data[0] = d.internet;
+    charts.chartEducacion.update();
+  }
+}
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+document.getElementById('provinceFilter').addEventListener('change', e => {
+  currentProvince = e.target.value;
+  updateDashboard();
+  showToast('Filtro territorial actualizado');
+});
+
+document.getElementById('resetFilters').addEventListener('click', () => {
+  currentProvince = 'regional';
+  document.getElementById('provinceFilter').value = 'regional';
+  updateDashboard();
+  showToast('Filtros restablecidos');
+});
+
+/* SIMULADOR */
+const ranges = {
+  securityRange:'securityValue',
+  healthRange:'healthValue',
+  educationRange:'educationValue'
+};
+
+Object.keys(ranges).forEach(id => {
+  document.getElementById(id).addEventListener('input', updateSimulator);
+});
+
+function updateSimulator() {
+  const s = +document.getElementById('securityRange').value;
+  const h = +document.getElementById('healthRange').value;
+  const e = +document.getElementById('educationRange').value;
+  const total = s+h+e;
+
+  setText('securityValue', s);
+  setText('healthValue', h);
+  setText('educationValue', e);
+  setText('budgetUsed', `${total} / 100`);
+
+  const warning = document.getElementById('budgetWarning');
+  if (total > 100) {
+    warning.classList.remove('hidden');
+    warning.textContent = `Has asignado ${total} puntos. Reduce ${total-100} para mantener el presupuesto.`;
+  } else {
+    warning.classList.add('hidden');
+  }
+
+  const factor = total > 0 && total <= 100 ? 100/100 : 0;
+  const ss = Math.round(s * 1.15 * factor);
+  const hh = Math.round(h * 1.10 * factor);
+  const ee = Math.round(e * 1.12 * factor);
+
+  setText('scoreSecurity', Math.min(100,ss));
+  setText('scoreHealth', Math.min(100,hh));
+  setText('scoreEducation', Math.min(100,ee));
+  document.getElementById('barSecurity').style.width = Math.min(100,ss) + '%';
+  document.getElementById('barHealth').style.width = Math.min(100,hh) + '%';
+  document.getElementById('barEducation').style.width = Math.min(100,ee) + '%';
+
+  const msg = document.getElementById('simulatorMessage');
+  if (total > 100) msg.textContent = 'El presupuesto está excedido. Ajusta las prioridades.';
+  else if (total === 100) {
+    const vals = [['Seguridad',s],['Salud',h],['Educación',e]].sort((a,b)=>b[1]-a[1]);
+    msg.textContent = `Prioridad dominante: ${vals[0][0]}. Una asignación equilibrada reduce la dependencia de una sola política.`;
+  } else msg.textContent = `Quedan ${100-total} puntos sin asignar.`;
+}
+
+function balanceBudget() {
+  document.getElementById('securityRange').value = 34;
+  document.getElementById('healthRange').value = 33;
+  document.getElementById('educationRange').value = 33;
+  updateSimulator();
+}
+
+function resetSimulator() {
+  document.getElementById('securityRange').value = 0;
+  document.getElementById('healthRange').value = 0;
+  document.getElementById('educationRange').value = 0;
+  updateSimulator();
+}
+
+/* QUIZ */
+const quiz = [
+  {
+    q:'¿Qué diferencia básica existe entre percepción de inseguridad y victimización?',
+    options:['Son exactamente lo mismo.','La percepción mide temor/riesgo percibido; la victimización registra experiencias delictivas.','La victimización siempre es mayor.','La percepción solo se mide en zonas rurales.'],
+    answer:1
+  },
+  {
+    q:'¿Cuál es una buena práctica al usar un indicador público?',
+    options:['Ignorar el año del dato.','Comparar cifras sin revisar definiciones.','Verificar fuente, año, población y unidad de medida.','Copiar el porcentaje sin contexto.'],
+    answer:2
+  },
+  {
+    q:'¿Qué enfoque ayuda a estudiar la brecha digital?',
+    options:['Medir solamente si existe internet.','Considerar conectividad, dispositivos, energía, calidad y habilidades digitales.','Medir solo la cantidad de computadoras.','Usar únicamente datos de la capital.'],
+    answer:1
+  },
+  {
+    q:'Ante un problema de dengue, ¿qué enfoque es más útil?',
+    options:['Actuar únicamente cuando aumentan los casos.','Combinar vigilancia, eliminación de criaderos, comunicación y atención sanitaria.','Ignorar el almacenamiento de agua.','Usar un único indicador.'],
+    answer:1
+  },
+  {
+    q:'¿Para qué sirve un simulador como el de este tablero?',
+    options:['Predecir exactamente el futuro.','Sustituir un presupuesto público real.','Explorar de manera educativa los efectos de distintas prioridades.','Determinar automáticamente una política oficial.'],
+    answer:2
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = quiz.map((item,i) => `
+    <div class="mb-6 p-5 bg-slate-50 rounded-xl border border-slate-200">
+      <div class="font-bold text-slate-900">${i+1}. ${item.q}</div>
+      <div class="grid gap-2 mt-3">
+        ${item.options.map((op,j)=>`
+          <label class="flex gap-3 items-start p-3 bg-white border border-slate-200 rounded-lg hover:border-indigo-300 cursor-pointer">
+            <input type="radio" name="q${i}" value="${j}" class="mt-1">
+            <span class="text-sm">${op}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function submitQuiz() {
+  let score = 0;
+  let answered = 0;
+  quiz.forEach((item,i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected) {
+      answered++;
+      if (+selected.value === item.answer) score++;
+    }
+  });
+  const result = document.getElementById('quizResult');
+  result.classList.remove('hidden');
+  if (answered < quiz.length) {
+    result.className = 'mt-5 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800';
+    result.innerHTML = `<strong>Faltan respuestas.</strong> Has respondido ${answered} de ${quiz.length}.`;
+    return;
+  }
+  const pct = score / quiz.length * 100;
+  const message = pct === 100 ? 'Excelente dominio.' : pct >= 60 ? 'Buen resultado. Puedes revisar los indicadores para profundizar.' : 'Conviene repasar la diferencia entre datos, indicadores e interpretación.';
+  result.className = `mt-5 p-4 rounded-xl ${pct >= 60 ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-red-50 border border-red-200 text-red-800'}`;
+  result.innerHTML = `<div class="text-2xl font-black">${score}/${quiz.length}</div><div class="font-bold mt-1">${message}</div>`;
+}
+
+function resetQuiz() {
+  renderQuiz();
+  document.getElementById('quizResult').classList.add('hidden');
+}
+
+/* UTILIDADES */
+function showToast(message) {
+  const t = document.getElementById('toast');
+  t.textContent = message;
+  t.classList.remove('hidden');
+  t.classList.add('toast');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>t.classList.add('hidden'),2200);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('toast').classList.add('hidden');
+  }
+});
+
+window.addEventListener('resize', () => {
+  Object.values(charts).forEach(c => c && c.resize());
+});
+
+/* INIT */
+buildCharts();
+renderQuiz();
+updateDashboard();
+updateSimulator();
+switchTab('tab-inicio');
+</script>
+</body>
+</html>
